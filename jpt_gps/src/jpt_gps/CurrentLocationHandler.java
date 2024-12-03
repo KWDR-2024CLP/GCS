@@ -36,12 +36,7 @@ public class CurrentLocationHandler implements ActionListener {
 
             JSONObject jsonResponse = new JSONObject(response.toString());
             String latitude = jsonResponse.getString("lat");
-            //String latitude = "36.168485";
             String longitude = jsonResponse.getString("lon");
-            //String longitude = "128.467821";
-            // latitude, longitude 값 출력
-            System.out.println("lat: " + latitude);
-            System.out.println("long: " + longitude);
 
             // VO에 현재 위치 저장
             vo.setX(longitude);
