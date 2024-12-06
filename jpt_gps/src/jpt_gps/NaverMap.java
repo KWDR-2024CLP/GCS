@@ -20,11 +20,20 @@ public class NaverMap {
     public void map_service(AddressVO vo) {
         String URL_STATICMAP = "https://naveropenapi.apigw.ntruss.com/map-static/v2/raster?";
         try {
-            String pos = URLEncoder.encode(vo.getX() + " " + vo.getY(), "UTF-8");
+            String centerPos = URLEncoder.encode(vo.getX() + " " + vo.getY(), "UTF-8");
             URL_STATICMAP += "center=" + vo.getX() + "," + vo.getY();
-            URL_STATICMAP += "&level=16&w=750&h=800"; // 프레임 절반에 맞게 지도 크기 조정
+            URL_STATICMAP += "&level=16&w=750&h=800"; // 지도 크기
             URL_STATICMAP += "&type=satellite"; // 위성지도
-            URL_STATICMAP += "&markers=type:t|size:mid|pos:" + pos + "|label:" + URLEncoder.encode(vo.getRoadAddress(), "UTF-8");
+
+            // 메인 마커
+            URL_STATICMAP += "&markers=type:t|size:mid|pos:" + centerPos + "|label:" + URLEncoder.encode(vo.getRoadAddress(), "UTF-8");
+
+            // 추가 마커 설정 (파란색)
+            URL_STATICMAP += "&markers=type:d|color:blue|pos:128.467811+36.168509|label:Target1";
+            URL_STATICMAP += "&markers=type:d|color:blue|pos:128.467431+36.168198|label:Target2";
+            URL_STATICMAP += "&markers=type:d|color:blue|pos:128.467447+36.168878|label:Target3";
+            
+            System.out.println("Request URL: " + URL_STATICMAP);
 
             URL url = new URL(URL_STATICMAP);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();

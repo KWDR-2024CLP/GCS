@@ -39,7 +39,7 @@ public class Project01_F {
         JLabel droneLabel = new JLabel("드론 카메라 송출 예정입니다...", JLabel.CENTER); // 중앙 정렬
         droneLabel.setForeground(Color.BLACK); // 글자 색 설정
         droneLabel.setFont(droneLabel.getFont().deriveFont(20.0f)); // 글자 크기 설정
-        //upperPanel.add(droneLabel, BorderLayout.CENTER); // 상단 패널 중앙에 추가
+        upperPanel.add(droneLabel, BorderLayout.CENTER); // 상단 패널 중앙에 추가
 
         // 하단 패널 (빈칸)
         JPanel lowerPanel = new JPanel();
