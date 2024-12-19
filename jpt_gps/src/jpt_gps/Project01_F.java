@@ -19,10 +19,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class Project01_F {
-	
+
+	static JFrame frm;
 	JLabel imageLabel;
 	// 기본 지도 좌표를 저장하는 객체
 	AddressVO vo = new AddressVO();
+
+	JLabel target1latJLabel;
+	JLabel target1lngJLabel;
 
 	public void initGUI() {
 
@@ -55,73 +59,108 @@ public class Project01_F {
 		Image rightImage = rightImageIcon.getImage();
 		Image srightImage = rightImage.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
 		ImageIcon srightImageIcon = new ImageIcon(srightImage);
-		
-		// 기본 프레임 
-		JFrame frm = new JFrame("Ground Control Station");
+
+		// 기본 프레임
+		frm = new JFrame("Ground Control Station");
 		frm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frm.setSize(1500, 800);
-		
-		 // 지도 기본 좌표 설정
-        vo.setX("128.468000"); // 경도
-        vo.setY("36.168280");  // 위도
-        vo.setRoadAddress("NOW");
-        vo.setJibunAddress("NOW");
-        
-frm.addKeyListener(new KeyListener() {
-			
+
+		// 지도 기본 좌표 설정
+		vo.setX("128.468000"); // 경도
+		vo.setY("36.168280"); // 위도
+		vo.setRoadAddress("NOW");
+		vo.setJibunAddress("NOW");
+
+		frm.addKeyListener(new KeyListener() {
+
 			@Override
 			public void keyTyped(KeyEvent e) {
 				// TODO Auto-generated method stub
 			}
-			
+
 			@Override
 			public void keyReleased(KeyEvent e) {
 				// TODO Auto-generated method stub
 			}
-			
+
 			@Override
 			public void keyPressed(KeyEvent e) {
 				// TODO Auto-generated method stub
-				System.out.println("keyboard");
-				if (e.getKeyCode() == KeyEvent.VK_UP ) {
+				if (e.getKeyCode() == KeyEvent.VK_UP) {
 					System.out.println("up");
 					double latitude = Double.parseDouble(vo.getY());
 					latitude += 0.0001;
-                    vo.setY(String.format("%.6f", latitude)); // 소수점 6자리 포맷
-                    
-                    // 지도 업데이트
-                    System.out.println("Updated Longitude: " + vo.getY());
-                    loadMap();
+					vo.setY(String.format("%.6f", latitude)); // 소수점 6자리 포맷
+
+					// 지도 업데이트
+					System.out.println("Updated Longitude: " + vo.getY());
+					loadMap();
 				}
 				if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 					System.out.println("down");
 					double latitude = Double.parseDouble(vo.getY());
 					latitude -= 0.0001;
-                    vo.setY(String.format("%.6f", latitude)); // 소수점 6자리 포맷
-                    
-                    // 지도 업데이트
-                    System.out.println("Updated Longitude: " + vo.getY());
-                    loadMap();
+					vo.setY(String.format("%.6f", latitude)); // 소수점 6자리 포맷
+
+					// 지도 업데이트
+					System.out.println("Updated Longitude: " + vo.getY());
+					loadMap();
 				}
 				if (e.getKeyCode() == KeyEvent.VK_LEFT) {
 					System.out.println("left");
 					double longitude = Double.parseDouble(vo.getX());
 					longitude -= 0.0001;
-                    vo.setX(String.format("%.6f", longitude)); // 소수점 6자리 포맷
-                    
-                    // 지도 업데이트
-                    System.out.println("Updated Longitude: " + vo.getX());
-                    loadMap();
+					vo.setX(String.format("%.6f", longitude)); // 소수점 6자리 포맷
+
+					// 지도 업데이트
+					System.out.println("Updated Longitude: " + vo.getX());
+					loadMap();
 				}
 				if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 					System.out.println("right");
 					double longitude = Double.parseDouble(vo.getX());
 					longitude += 0.0001;
-                    vo.setX(String.format("%.6f", longitude)); // 소수점 6자리 포맷
-                    
-                    // 지도 업데이트
-                    System.out.println("Updated Longitude: " + vo.getX());
-                    loadMap();
+					vo.setX(String.format("%.6f", longitude)); // 소수점 6자리 포맷
+
+					// 지도 업데이트
+					System.out.println("Updated Longitude: " + vo.getX());
+					loadMap();
+				}
+				if (e.getKeyCode() == KeyEvent.VK_W) {
+					String target1lat = target1latJLabel.getText();
+					double target1LAT = Double.parseDouble(target1lat) + 0.0001;
+					String starget1lat = String.valueOf(target1LAT);
+					target1latJLabel.setText(starget1lat);
+
+					NaverMap.target1Y += 0.0001;
+					loadMap();
+				}
+				if (e.getKeyCode() == KeyEvent.VK_S) {
+					String target1lat = target1latJLabel.getText();
+					double target1LAT = Double.parseDouble(target1lat) - 0.0001;
+					String starget1lat = String.valueOf(target1LAT);
+					target1latJLabel.setText(starget1lat);
+
+					NaverMap.target1Y -= 0.0001;
+					loadMap();
+				}
+				if (e.getKeyCode() == KeyEvent.VK_A) {
+					String target1lng = target1lngJLabel.getText();
+					double target1LNG = Double.parseDouble(target1lng) - 0.0001;
+					String starget1lng = String.valueOf(target1LNG);
+					target1lngJLabel.setText(starget1lng);
+
+					NaverMap.target1X -= 0.0001;
+					loadMap();
+				}
+				if (e.getKeyCode() == KeyEvent.VK_D) {
+					String target1lng = target1lngJLabel.getText();
+					double target1LNG = Double.parseDouble(target1lng) + 0.0001;
+					String starget1lng = String.valueOf(target1LNG);
+					target1lngJLabel.setText(starget1lng);
+
+					NaverMap.target1X += 0.0001;
+					loadMap();
 				}
 			}
 		});
@@ -185,7 +224,7 @@ frm.addKeyListener(new KeyListener() {
 		lowerPanel.add(target1JLabel);
 
 		// target1 정보 넣는 JLabel(latitude)
-		JLabel target1latJLabel = new JLabel("36.168197");
+		target1latJLabel = new JLabel("36.168197");
 		target1latJLabel.setHorizontalAlignment(JLabel.CENTER);
 		target1latJLabel.setBounds(260, 93, 150, 30);
 		target1latJLabel.setForeground(Color.BLACK);
@@ -193,7 +232,7 @@ frm.addKeyListener(new KeyListener() {
 		lowerPanel.add(target1latJLabel);
 
 		// target1 정보 넣는 JLabel(longitude)
-		JLabel target1lngJLabel = new JLabel("128.467796");
+		target1lngJLabel = new JLabel("128.467796");
 		target1lngJLabel.setHorizontalAlignment(JLabel.CENTER);
 		target1lngJLabel.setBounds(525, 93, 150, 30);
 		target1lngJLabel.setForeground(Color.BLACK);
@@ -311,11 +350,11 @@ frm.addKeyListener(new KeyListener() {
 		// 지도 표시
 		new NaverMap(this).map_service(vo);
 	}
-	
+
 	public void removeTarget2() {
-        NaverMap.removeMarker("target2");
-        loadMap();
-    }
+		NaverMap.removeMarker("target2");
+		loadMap();
+	}
 
 	public static void main(String[] args) {
 		new Project01_F().initGUI();
