@@ -10,13 +10,22 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.io.File;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.layout.StackPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
+
+import javax.swing.*;
 
 public class Project01_F {
 
@@ -33,19 +42,19 @@ public class Project01_F {
 		// 그리드 표 이미지
 		ImageIcon gridImageIcon = new ImageIcon("D:\\COLLEGE\\3학년 2학기\\CLP\\grid.png");
 		Image gridImage = gridImageIcon.getImage();
-		Image sgridImage = gridImage.getScaledInstance(740, 280, Image.SCALE_SMOOTH);
+		Image sgridImage = gridImage.getScaledInstance(600, 280, Image.SCALE_SMOOTH);
 		ImageIcon sgridImageIcon = new ImageIcon(sgridImage);
 
 		// 그리드 표 이미지(첫번째 줄 선택)
 		ImageIcon grid1ImageIcon = new ImageIcon("D:\\COLLEGE\\3학년 2학기\\CLP\\grid1.png");
 		Image grid1Image = grid1ImageIcon.getImage();
-		Image sgrid1Image = grid1Image.getScaledInstance(740, 280, Image.SCALE_SMOOTH);
+		Image sgrid1Image = grid1Image.getScaledInstance(600, 280, Image.SCALE_SMOOTH);
 		ImageIcon sgrid1ImageIcon = new ImageIcon(sgrid1Image);
 
 		// 그리드 표 이미지(두번째 줄 선택)
 		ImageIcon grid2ImageIcon = new ImageIcon("D:\\COLLEGE\\3학년 2학기\\CLP\\grid2.png");
 		Image grid2Image = grid2ImageIcon.getImage();
-		Image sgrid2Image = grid2Image.getScaledInstance(740, 280, Image.SCALE_SMOOTH);
+		Image sgrid2Image = grid2Image.getScaledInstance(600, 280, Image.SCALE_SMOOTH);
 		ImageIcon sgrid2ImageIcon = new ImageIcon(sgrid2Image);
 
 		// 왼쪽 화살표 이미지
@@ -172,18 +181,19 @@ public class Project01_F {
 		imageLabel = new JLabel();
 		JPanel leftPanel = new JPanel(new BorderLayout());
 		leftPanel.add(imageLabel, BorderLayout.CENTER); // 지도 추가
-		leftPanel.setPreferredSize(new Dimension(750, 800));
+		leftPanel.setPreferredSize(new Dimension(890, 800));
 		c.add(BorderLayout.WEST, leftPanel);
 
 		// 오른쪽 패널 (위 아래로 나뉨)
 		JPanel rightPanel = new JPanel(new BorderLayout());
-		rightPanel.setPreferredSize(new Dimension(750, 800));
+		rightPanel.setPreferredSize(new Dimension(610, 800));
 
 		// 상단 패널 (문구)
 		JPanel upperPanel = new JPanel(new BorderLayout());
-		upperPanel.setBackground(Color.LIGHT_GRAY);
-		upperPanel.setPreferredSize(new Dimension(750, 400));
-
+		upperPanel.setBackground(Color.white);
+		upperPanel.setPreferredSize(new Dimension(610, 400));
+		
+		// 드론 영상 들어가는 JLabel
 		JLabel droneLabel = new JLabel("The drone camera feed is coming soon...", JLabel.CENTER); // 중앙 정렬
 		droneLabel.setForeground(Color.BLACK); // 글자 색 설정
 		droneLabel.setFont(droneLabel.getFont().deriveFont(20.0f)); // 글자 크기 설정
@@ -193,71 +203,71 @@ public class Project01_F {
 		JPanel lowerPanel = new JPanel();
 		lowerPanel.setLayout(null);
 		lowerPanel.setBackground(Color.WHITE);
-		lowerPanel.setPreferredSize(new Dimension(750, 370));
+		lowerPanel.setPreferredSize(new Dimension(610, 370));
 
 		// 구분 문구 넣는 JLabel(target)
 		JLabel targetJLabel = new JLabel("TARGET");
-		targetJLabel.setBounds(45, 25, 150, 30);
+		targetJLabel.setBounds(30, 25, 150, 30);
 		targetJLabel.setForeground(Color.BLACK);
 		targetJLabel.setFont(new Font("Bauhaus", Font.BOLD, 25));
 		lowerPanel.add(targetJLabel);
 
 		// 구분 문구 넣는 JLabel(latitude)
 		JLabel latitudeJLabel = new JLabel("LATITUDE");
-		latitudeJLabel.setBounds(275, 25, 150, 30);
+		latitudeJLabel.setBounds(215, 25, 150, 30);
 		latitudeJLabel.setForeground(Color.BLACK);
 		latitudeJLabel.setFont(new Font("Bauhaus", Font.BOLD, 25));
 		lowerPanel.add(latitudeJLabel);
 
 		// 구분 문구 넣는 JLabel(longitude)
 		JLabel longitudeJLabel = new JLabel("LONGITUDE");
-		longitudeJLabel.setBounds(530, 25, 150, 30);
+		longitudeJLabel.setBounds(420, 25, 150, 30);
 		longitudeJLabel.setForeground(Color.BLACK);
 		longitudeJLabel.setFont(new Font("Bauhaus", Font.BOLD, 25));
 		lowerPanel.add(longitudeJLabel);
 
 		// target1 정보 넣는 JLabel(target1)
 		JLabel target1JLabel = new JLabel("target1");
-		target1JLabel.setBounds(60, 93, 150, 30);
+		target1JLabel.setBounds(45, 93, 150, 30);
 		target1JLabel.setForeground(Color.BLACK);
 		target1JLabel.setFont(new Font("Bauhaus", Font.BOLD, 23));
 		lowerPanel.add(target1JLabel);
 
 		// target1 정보 넣는 JLabel(latitude)
-		target1latJLabel = new JLabel("36.168197");
+		target1latJLabel = new JLabel("36.168302");
 		target1latJLabel.setHorizontalAlignment(JLabel.CENTER);
-		target1latJLabel.setBounds(260, 93, 150, 30);
+		target1latJLabel.setBounds(200, 93, 150, 30);
 		target1latJLabel.setForeground(Color.BLACK);
 		target1latJLabel.setFont(new Font("Bauhaus", Font.BOLD, 23));
 		lowerPanel.add(target1latJLabel);
 
 		// target1 정보 넣는 JLabel(longitude)
-		target1lngJLabel = new JLabel("128.467796");
+		target1lngJLabel = new JLabel("128.467714");
 		target1lngJLabel.setHorizontalAlignment(JLabel.CENTER);
-		target1lngJLabel.setBounds(525, 93, 150, 30);
+		target1lngJLabel.setBounds(420, 93, 150, 30);
 		target1lngJLabel.setForeground(Color.BLACK);
 		target1lngJLabel.setFont(new Font("Bauhaus", Font.BOLD, 23));
 		lowerPanel.add(target1lngJLabel);
 
 		// target2 정보 넣는 JLabel(target2)
 		JLabel target2JLabel = new JLabel("target2");
-		target2JLabel.setBounds(60, 162, 150, 30);
+		target2JLabel.setBounds(45, 162, 150, 30);
 		target2JLabel.setForeground(Color.BLACK);
 		target2JLabel.setFont(new Font("Bauhaus", Font.BOLD, 23));
 		lowerPanel.add(target2JLabel);
 
 		// target2 정보 넣는 JLabel(latitude)
-		JLabel target2latJLabel = new JLabel("36.168302");
+		JLabel target2latJLabel = new JLabel("36.168197");
 		target2latJLabel.setHorizontalAlignment(JLabel.CENTER);
-		target2latJLabel.setBounds(260, 162, 150, 30);
+		target2latJLabel.setBounds(200, 162, 150, 30);
 		target2latJLabel.setForeground(Color.BLACK);
 		target2latJLabel.setFont(new Font("Bauhaus", Font.BOLD, 23));
 		lowerPanel.add(target2latJLabel);
 
 		// target2 정보 넣는 JLabel(longitude)
-		JLabel target2lngJLabel = new JLabel("128.467714");
+		JLabel target2lngJLabel = new JLabel("128.467796");
 		target2lngJLabel.setHorizontalAlignment(JLabel.CENTER);
-		target2lngJLabel.setBounds(525, 162, 150, 30);
+		target2lngJLabel.setBounds(420, 162, 150, 30);
 		target2lngJLabel.setForeground(Color.BLACK);
 		target2lngJLabel.setFont(new Font("Bauhaus", Font.BOLD, 23));
 		lowerPanel.add(target2lngJLabel);
@@ -287,7 +297,6 @@ public class Project01_F {
 					target2JLabel.setVisible(false);
 					target2latJLabel.setVisible(false);
 					target2lngJLabel.setVisible(false);
-					// repair
 					loadMap();
 					removeTarget2();
 				} else {
@@ -326,12 +335,12 @@ public class Project01_F {
 
 		// 왼쪽 화살표 이미지 넣는 JLabel
 		JLabel leftJLabel = new JLabel(sleftImageIcon);
-		leftJLabel.setBounds(280, 305, sleftImageIcon.getIconWidth(), sleftImageIcon.getIconHeight());
+		leftJLabel.setBounds(220, 305, sleftImageIcon.getIconWidth(), sleftImageIcon.getIconHeight());
 		lowerPanel.add(leftJLabel);
 
 		// 오른쪽 화살표 이미지 넣는 JLabel
 		JLabel rightJLabel = new JLabel(srightImageIcon);
-		rightJLabel.setBounds(410, 305, srightImageIcon.getIconWidth(), srightImageIcon.getIconHeight());
+		rightJLabel.setBounds(350, 305, srightImageIcon.getIconWidth(), srightImageIcon.getIconHeight());
 		lowerPanel.add(rightJLabel);
 
 		// 오른쪽 패널에 추가
@@ -357,6 +366,6 @@ public class Project01_F {
 	}
 
 	public static void main(String[] args) {
-		new Project01_F().initGUI();
-	}
+        new Project01_F().initGUI();
+    }
 }

@@ -16,8 +16,8 @@ public class NaverMap {
 	private static boolean showTarget2 = true; // target2 표시 여부
 
 	// repair target1의 초기 좌표 설정
-	static double target1X = 128.467796;
-	static double target1Y = 36.168197;
+	static double target1X = 128.467714;
+	static double target1Y = 36.168302;
 	static boolean target1 = false;
 
 	public NaverMap(Project01_F naverMap) {
@@ -31,19 +31,16 @@ public class NaverMap {
 			String centerPos = URLEncoder.encode(vo.getX() + " " + vo.getY(), "UTF-8");
 
 			String url = baseURL + "center=" + vo.getX() + "," + vo.getY();
-			url += "&level=17&w=750&h=800"; // 지도 크기
+			url += "&level=17&w=890&h=800"; // 지도 크기
 			url += "&type=satellite"; // 위성 지도
 			url += "&markers=type:t|size:mid|pos:" + centerPos + "|label:"
 					+ URLEncoder.encode(vo.getRoadAddress(), "UTF-8");
 
-			// Target1 마커
-			// url += "&markers=type:d|color:blue|pos:128.467796+36.168197|label:Target1";
-			// repair
 			url += "&markers=type:d|color:blue|pos:" + target1X + "+" + target1Y + "|label:Target1";
 
 			// Target2 마커 (showTarget2가 true인 경우만 추가)
 			if (showTarget2) {
-				url += "&markers=type:d|color:blue|pos:128.467714+36.168302|label:Target2";
+				url += "&markers=type:d|color:blue|pos:128.467796+36.168197|label:Target2";
 			}
 
 			System.out.println("Request URL: " + url);
