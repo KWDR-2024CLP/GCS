@@ -13,6 +13,7 @@ import javax.swing.ImageIcon;
 public class NaverMap {
     Project01_F naverMap;
     static  String URL_STATICMAP = "https://naveropenapi.apigw.ntruss.com/map-static/v2/raster?";
+    private static boolean showTarget2 = true; // target2 표시 여부
 
     public NaverMap(Project01_F naverMap) {
         this.naverMap = naverMap;
@@ -20,25 +21,24 @@ public class NaverMap {
 
     public void map_service(AddressVO vo) {
         try {
-            // 기존 URL 초기화 (기존 마커가 계속 쌓이지 않도록)
             String baseURL = "https://naveropenapi.apigw.ntruss.com/map-static/v2/raster?";
             String centerPos = URLEncoder.encode(vo.getX() + " " + vo.getY(), "UTF-8");
 
-            // 새로운 지도 URL 구성
             String url = baseURL + "center=" + vo.getX() + "," + vo.getY();
             url += "&level=17&w=750&h=800"; // 지도 크기
             url += "&type=satellite"; // 위성 지도
-
-            // 새로운 마커 추가
             url += "&markers=type:t|size:mid|pos:" + centerPos + "|label:" + URLEncoder.encode(vo.getRoadAddress(), "UTF-8");
 
-            // 다른 마커 예시 (필요한 경우 추가 가능)
+            // Target1 마커
             url += "&markers=type:d|color:blue|pos:128.467796+36.168197|label:Target1";
-            url += "&markers=type:d|color:blue|pos:128.467714+36.168302|label:Target2";
+
+            // Target2 마커 (showTarget2가 true인 경우만 추가)
+            if (showTarget2) {
+                url += "&markers=type:d|color:blue|pos:128.467714+36.168302|label:Target2";
+            }
 
             System.out.println("Request URL: " + url);
 
-            // HTTP 요청
             URL requestUrl = new URL(url);
             HttpURLConnection con = (HttpURLConnection) requestUrl.openConnection();
             con.setRequestMethod("GET");
@@ -52,7 +52,6 @@ public class NaverMap {
                 byte[] bytes = new byte[1024];
                 int read;
 
-                // 랜덤 파일명으로 이미지 파일 생성
                 String tempName = Long.valueOf(new Date().getTime()).toString();
                 File file = new File(tempName + ".jpg");
                 file.createNewFile();
@@ -65,7 +64,6 @@ public class NaverMap {
                 is.close();
                 out.close();
 
-                // 지도 이미지 설정
                 ImageIcon img = new ImageIcon(file.getName());
                 naverMap.imageLabel.setIcon(img);
             } else {
@@ -73,6 +71,12 @@ public class NaverMap {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void removeMarker(String marker) {
+        if ("target2".equalsIgnoreCase(marker)) {
+            showTarget2 = false;
         }
     }
 

@@ -66,6 +66,65 @@ public class Project01_F {
         vo.setY("36.168280");  // 위도
         vo.setRoadAddress("NOW");
         vo.setJibunAddress("NOW");
+        
+frm.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				System.out.println("keyboard");
+				if (e.getKeyCode() == KeyEvent.VK_UP ) {
+					System.out.println("up");
+					double latitude = Double.parseDouble(vo.getY());
+					latitude += 0.0001;
+                    vo.setY(String.format("%.6f", latitude)); // 소수점 6자리 포맷
+                    
+                    // 지도 업데이트
+                    System.out.println("Updated Longitude: " + vo.getY());
+                    loadMap();
+				}
+				if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+					System.out.println("down");
+					double latitude = Double.parseDouble(vo.getY());
+					latitude -= 0.0001;
+                    vo.setY(String.format("%.6f", latitude)); // 소수점 6자리 포맷
+                    
+                    // 지도 업데이트
+                    System.out.println("Updated Longitude: " + vo.getY());
+                    loadMap();
+				}
+				if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+					System.out.println("left");
+					double longitude = Double.parseDouble(vo.getX());
+					longitude -= 0.0001;
+                    vo.setX(String.format("%.6f", longitude)); // 소수점 6자리 포맷
+                    
+                    // 지도 업데이트
+                    System.out.println("Updated Longitude: " + vo.getX());
+                    loadMap();
+				}
+				if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+					System.out.println("right");
+					double longitude = Double.parseDouble(vo.getX());
+					longitude += 0.0001;
+                    vo.setX(String.format("%.6f", longitude)); // 소수점 6자리 포맷
+                    
+                    // 지도 업데이트
+                    System.out.println("Updated Longitude: " + vo.getX());
+                    loadMap();
+				}
+			}
+		});
 
 		Container c = frm.getContentPane();
 		c.setLayout(new BorderLayout());
@@ -189,6 +248,9 @@ public class Project01_F {
 					target2JLabel.setVisible(false);
 					target2latJLabel.setVisible(false);
 					target2lngJLabel.setVisible(false);
+					// repair
+					loadMap();
+					removeTarget2();
 				} else {
 					JOptionPane.showMessageDialog(null, "Tracking cancelled.", "Info", JOptionPane.PLAIN_MESSAGE);
 					gridJLabel.setIcon(sgridImageIcon);
@@ -232,65 +294,6 @@ public class Project01_F {
 		JLabel rightJLabel = new JLabel(srightImageIcon);
 		rightJLabel.setBounds(410, 305, srightImageIcon.getIconWidth(), srightImageIcon.getIconHeight());
 		lowerPanel.add(rightJLabel);
-		
-		frm.addKeyListener(new KeyListener() {
-			
-			@Override
-			public void keyTyped(KeyEvent e) {
-				// TODO Auto-generated method stub
-			}
-			
-			@Override
-			public void keyReleased(KeyEvent e) {
-				// TODO Auto-generated method stub
-			}
-			
-			@Override
-			public void keyPressed(KeyEvent e) {
-				// TODO Auto-generated method stub
-				System.out.println("keyboard");
-				if (e.getKeyCode() == KeyEvent.VK_UP ) {
-					System.out.println("up");
-					double latitude = Double.parseDouble(vo.getY());
-					latitude += 0.0001;
-                    vo.setY(String.format("%.6f", latitude)); // 소수점 6자리 포맷
-                    
-                    // 지도 업데이트
-                    System.out.println("Updated Longitude: " + vo.getY());
-                    loadMap();
-				}
-				if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-					System.out.println("down");
-					double latitude = Double.parseDouble(vo.getY());
-					latitude -= 0.0001;
-                    vo.setY(String.format("%.6f", latitude)); // 소수점 6자리 포맷
-                    
-                    // 지도 업데이트
-                    System.out.println("Updated Longitude: " + vo.getY());
-                    loadMap();
-				}
-				if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-					System.out.println("left");
-					double longitude = Double.parseDouble(vo.getX());
-					longitude -= 0.0001;
-                    vo.setX(String.format("%.6f", longitude)); // 소수점 6자리 포맷
-                    
-                    // 지도 업데이트
-                    System.out.println("Updated Longitude: " + vo.getX());
-                    loadMap();
-				}
-				if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-					System.out.println("right");
-					double longitude = Double.parseDouble(vo.getX());
-					longitude += 0.0001;
-                    vo.setX(String.format("%.6f", longitude)); // 소수점 6자리 포맷
-                    
-                    // 지도 업데이트
-                    System.out.println("Updated Longitude: " + vo.getX());
-                    loadMap();
-				}
-			}
-		});
 
 		// 오른쪽 패널에 추가
 		rightPanel.add(upperPanel, BorderLayout.NORTH);
@@ -308,6 +311,11 @@ public class Project01_F {
 		// 지도 표시
 		new NaverMap(this).map_service(vo);
 	}
+	
+	public void removeTarget2() {
+        NaverMap.removeMarker("target2");
+        loadMap();
+    }
 
 	public static void main(String[] args) {
 		new Project01_F().initGUI();
